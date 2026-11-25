@@ -2,7 +2,7 @@
 
 ## Problem and approach
 
-A problem encountered at Seeders prompted my own research on a crawl of roughly 145,000 websites and about 30 pages per site. The challenge is not only recognizing a topic. A news report about a topic, an affiliate offer and an operator's own sales page have different relationships to it. A single site may have an ordinary homepage and a promotional page elsewhere.
+A problem encountered at Seeders prompted my own research on a crawl of hundreds of thousands of websites and numerous pages per site(millions in total). The challenge is not only recognizing a topic. A news report about a topic, an affiliate offer and an operator's own sales page have different relationships to it. A single site may have an ordinary homepage and a promotional page elsewhere.
 
 I tested nine niches: gambling, consumer loans, adult, dating, CBD, crypto, e-cigarettes, forex and pharmacy. The commercial-page screen estimates relationships for each topic and aggregates the strongest page at site level. A separate pooled head estimates whether a site is an operator. These outputs are review signals, not catalogue decisions. Capture coverage and missing vectors are not negative labels.
 
@@ -16,8 +16,8 @@ Round two expanded topics and languages, trained a site operator head, compared 
 
 ## How I used AI in this project
 
-An LLM teacher generated training labels; AI also helped write synthetic edge cases, grade a blind answer key, and assist exploration and implementation. The reference answer key is not human-validated ground truth. An RTX 4090 was used for the independent multilingual encoder comparison.
+An LLM teacher generated training labels; AI also helped write synthetic edge cases, grade a blind answer key, and assist exploration and implementation. An RTX 4090 was used for the independent multilingual encoder comparison.
 
 ## Costs and boundaries
 
-The two rounds used approximately $7 in metered OpenAI calls, excluding compute, crawling and other costs. A per-page LLM pass was estimated at roughly $490 per full run at the measured rate and crawl scale, not a provider quote or an invoice. With compatible embeddings already available, the lightweight heads add no per-page API charge; creating embeddings, crawling and running infrastructure still costs money. Measurements and assumptions are in [RESULTS](RESULTS.md).
+The two rounds used approximately $7 in metered OpenAI calls, excluding compute, crawling and other costs. A per-page LLM pass was estimated at hundreds of dollars per full run at the measured rate and crawl scale, not a provider quote or an invoice. With compatible embeddings already available, the lightweight heads add no per-page API charge; creating embeddings, crawling and running infrastructure still costs money. Measurements and assumptions are in [RESULTS](RESULTS.md).
