@@ -1,0 +1,36 @@
+{
+  "topics": [
+    "gambling",
+    "loan",
+    "adult",
+    "dating",
+    "cbd",
+    "crypto",
+    "esmoke",
+    "forex",
+    "pharmacy"
+  ],
+  "relations": [
+    "editorial",
+    "promotional",
+    "operator"
+  ],
+  "dimensions": 1024,
+  "a7": {
+    "calibration": {
+      "alarm": [
+        1.1605165004730225,
+        -2.7004268169403076
+      ],
+      "any": [
+        1.0967411994934082,
+        -2.572957754135132
+      ]
+    },
+    "threshold": {
+      "alarm": 0.2607487440109253,
+      "any": 0.1952798068523407
+    }
+  },
+  "operator_threshold": 0.9963980913162231
+}

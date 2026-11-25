@@ -1,27 +1,39 @@
-# Shared intent screening
+# Sensitive-niche screening: a research case study
 
-A small, trainable toolkit for investigating whether websites carry commercial content in sensitive topics. It was inspired by research built at Seeders. It uses embeddings already available to a crawler, topic words and categorized outbound destinations; a shared page classifier learns commercial intent across topics. A separate pooled site classifier estimates whether a site operates in a topic. Both return scores and separate decisions.
+This is personal research, code and numeric model weights shared for learning and further experimentation. It is **not production-ready**. The evaluation answer key was AI-graded and still needs human spot checks; some categories and languages have little evidence. The original cue and link lists are not included: they were derived from the crawl and part came from a GPL source. The frozen weights require compatible projected features as well as embeddings; this is not a text-to-score package.
 
-The included implementation is an **educational A7-style reimplementation**, not the original model or a reproduction of its reported scores. It has no pretrained weights or real examples. You must bring lawful, labeled, site-disjoint data, compatible embeddings and your own language-specific vocabularies and destination categorization. The toy vectors and text are generated from scratch for the demo. Its apparent accuracy is meaningless.
+At Seeders I encountered a problem that prompted my own research: a crawl of roughly 145,000 websites contained around 30 pages per site, and a homepage check could miss promotional content. An LLM per page would be expensive. I explored whether existing page embeddings and lightweight text and outbound-link features could screen for sensitive-topic promotions while separating those signals from a site operator.
 
-## Run the demo
+![Fresh held-out comparison](docs/charts/fresh-site-alarm.png)
 
-Python 3.10 or newer:
+On the fresh graded-page site-alarm target, the A7 commercial screen scored weighted F1 **0.725** (95% site-bootstrap interval 0.599–0.830); the LLM reference scored **0.806**. Against the same incomplete observed truth using every captured page A7 scored **0.570**; a true positive on an ungraded page can appear to be a false positive. A separate round-two operator head scored **0.721** on its operator target. These are distinct tasks. The older homepage-only result of 0.545 used a different cohort and target and is context, not a paired comparison. [Results](docs/RESULTS.md) explain the sampling and uncertainties.
+
+## Use the research weights
+
+Use Python 3.10+ and NumPy. Install `requirements.txt`; `huggingface-hub` is needed only for downloads. Both heads need **1,024-dimensional `text-embedding-3-small` page embeddings and compatible projected evidence**, with one row per captured page. The release does not construct the original evidence from text or links. A vector alone is insufficient.
+
+```python
+from niche_screen import load_model, score_pages, score_site
+
+model = load_model("weights")  # or load_model() after the private HF release is accessible
+pages = score_pages(model, vectors, a7_features)  # (N,1024), (N,9,19)
+site = score_site(model, vectors, a7_features, operator_features, is_homepage)
+# operator_features: (N,9,16), is_homepage: (N,)
+```
+
+The model returns nine topic scores, decisions, and separate commercial and operator signals. See [bring your own data](docs/BRING_YOUR_OWN.md) for feature definitions, caller-owned lists, embeddings, refitting, calibration and evaluation. Own cues and lists differ from the original inputs, so frozen results do not transfer automatically. Validate on independent human-reviewed sites.
+
+## Run synthetic examples
 
 ```sh
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
 python -m niche_screen.demo
+python -m niche_screen.retrain --demo
 python -m unittest discover -s tests -v
 ```
 
-The demo holds out whole synthetic sites and reports site-level commercial F1 and a site-cluster bootstrap interval. It does not train or evaluate a production classifier. See `niche_screen/demo.py` for the input contract and a minimal example. A page contains a site identifier, embedding, text, optional categorized links, homepage flag, and per-topic commercial labels. Use `None` for unassessed labels; do not turn missing evidence into a negative. Site operator labels are supplied separately. All embeddings must come from the same model and have the same dimensionality.
+Both demos use fictional generated inputs; their scores say nothing about real-world accuracy. The first is an independent small trainable baseline; the second refits the research head architectures on synthetic projected arrays and evaluates held-out synthetic sites.
 
-`SharedIntentScreen.fit_pages` trains the shared page head; `fit_operators` trains a separate site head from pooled page signals. `predict_sites` returns each head's score and decision. Its default 0.5 thresholds are illustrative: select thresholds using a separate development set. Group splits by site, check duplicates across splits, and use out-of-fold page scores when training the site head to reduce stacking leakage. Never train or tune on your held-out test set. Capture coverage and unassessable sites need explicit handling by the caller.
-
-`site_bootstrap` resamples sites, retaining all their topic rows, and reports micro F1 and a percentile interval. It assumes equally sampled sites and is not a substitute for design-weighted evaluation. If your sample is stratified, enriched or has unequal inclusion probabilities, implement an appropriate weighted estimator. The original research used sampling weights; this simple harness cannot reproduce those estimates.
-
-The prompts in `prompts/` are starting points for a teacher and synthetic training examples. Review their output, protect private source material, and keep evaluation independent. The [method and lessons](METHOD.md) explain research results and their limitations.
-
-MIT licensed; see `LICENSE`.
+Read the [case study and method](docs/METHOD.md), [results and subgroup tables](docs/RESULTS.md), [experiments and ablations](docs/EXPERIMENTS.md), [anonymized examples](docs/EXAMPLES.md), [limitations](docs/LIMITATIONS.md) and [model card](MODEL_CARD.md). Numeric weights are available as a private GitHub release. A [Hugging Face model page](https://huggingface.co/MikeCVermeer/sensitive-niche-screening) is planned; the prepared upload is not yet published. MIT license; see [LICENSE](LICENSE).

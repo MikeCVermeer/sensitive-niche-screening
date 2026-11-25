@@ -41,3 +41,11 @@ class ToolkitTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class OwnListsTest(unittest.TestCase):
+    def test_exact_destination_labels(self):
+        from pathlib import Path
+        from niche_screen.inputs import load_lists, categorize_links
+        cues, destinations = load_lists(Path(__file__).resolve().parents[1] / 'examples/own-lists.json')
+        self.assertIn('gaming', cues)
+        self.assertEqual(categorize_links(['https://example.test/path', 'https://other.example.test'], destinations), ['gaming'])

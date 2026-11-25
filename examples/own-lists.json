@@ -1,0 +1,10 @@
+{
+  "cues": {
+    "gaming": ["wager", "game"],
+    "finance": ["credit", "loan"]
+  },
+  "destinations": {
+    "example.test": ["gaming"],
+    "finance.example.test": ["finance"]
+  }
+}
