@@ -1,8 +1,8 @@
 # Sensitive-niche screening: a research case study
 
-This is personal research, code and numeric model weights shared for learning and further experimentation. It is **not production-ready**. The evaluation answer key was AI-graded and still needs human spot checks; some categories and languages have little evidence. The original cue and link lists are not included: they were derived from the crawl and part came from a GPL source. The frozen weights require compatible projected features as well as embeddings; this is not a text-to-score package.
+This is personal research, code and numeric model weights shared for learning and further experimentation. It is **not production-ready**. The original cue and link lists are not included: they were derived from the crawl and part came from a GPL source. The frozen weights require compatible projected features as well as embeddings; this is not a text-to-score package.
 
-At Seeders I encountered a problem that prompted my own research: a crawl of roughly 145,000 websites contained around 30 pages per site, and a homepage check could miss promotional content. An LLM per page would be expensive. I explored whether existing page embeddings and lightweight text and outbound-link features could screen for sensitive-topic promotions while separating those signals from a site operator.
+At [Seeders](https://seeders.com/) I encountered a problem that prompted my own personal research: a crawl of hundreds of thousands of websites containing numerous pages per site, and a homepage check only could miss promotional content. An LLM per page would be expensive. I explored whether existing page embeddings and lightweight text and outbound-link features could screen for sensitive-topic promotions while separating those signals from a site operator.
 
 ![Fresh held-out comparison](docs/charts/fresh-site-alarm.png)
 
@@ -21,7 +21,7 @@ site = score_site(model, vectors, a7_features, operator_features, is_homepage)
 # operator_features: (N,9,16), is_homepage: (N,)
 ```
 
-The model returns nine topic scores, decisions, and separate commercial and operator signals. See [bring your own data](docs/BRING_YOUR_OWN.md) for feature definitions, caller-owned lists, embeddings, refitting, calibration and evaluation. Own cues and lists differ from the original inputs, so frozen results do not transfer automatically. Validate on independent human-reviewed sites.
+The model returns nine topic scores, decisions, and separate commercial and operator signals. See [bring your own data](docs/BRING_YOUR_OWN.md) for feature definitions, caller-owned lists, embeddings, refitting, calibration and evaluation. Own cues and lists differ from the original inputs, so frozen results do not transfer automatically.
 
 ## Run synthetic examples
 
