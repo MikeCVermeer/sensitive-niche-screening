@@ -1,6 +1,6 @@
 # Limitations
 
-This is personal research, not a production-ready classifier. The answer key is AI-graded and a human spot check is still needed. AI labels may share biases with the teacher or reference and are not independent proof of truth. Findings are limited to captured pages and the specified rubric and population. Missing or unassessable evidence is unknown, not negative.
+This is personal research, not a production-ready classifier. The answer key is AI-graded. AI labels may share biases with the teacher or reference and are not independent proof of truth. Findings are limited to captured pages and the specified rubric and population. Missing or unassessable evidence is unknown, not negative.
 
 Fresh site-level confidence intervals are wide. The sample was enriched for rare niches and weighted: five sites contributed 45.4% of estimated commercial page-topic positives and five accounted for 65.8% of estimated operator positives. A small number of weighted examples can move subgroup scores substantially. Adult operator detection improved in round two but remained uncertain; French and Polish results were weak or unstable. Some rare topics have sparse support.
 
